@@ -6,11 +6,27 @@ namespace Scripts
 {
     public class Tamagochi : MonoBehaviour
     {
-        public Tamago Tamago = new Tamago();
+        public Tamago Tamago = new Tamago(10, 1, 2, 5);
+
         // Start is called before the first frame update
         void Start()
         {
+            
+        }
 
+        void Feed()
+        {
+            Tamago.Hungry--;
+        }
+
+        void Play()
+        {
+            Tamago.Joy++;
+        }
+
+        void Sleep()
+        {
+            Tamago.Tired--;
         }
 
         // Update is called once per frame
@@ -125,7 +141,12 @@ namespace Scripts
             }
         }
 
-
-
+        public Tamago(int health, int tired, int joy, int hungry)
+        {
+            _health = health;
+            _tired = tired;
+            _joy = joy;
+            _hungry = hungry;
+        }
     }
 }
