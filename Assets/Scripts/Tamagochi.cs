@@ -61,7 +61,7 @@ namespace Scripts
 
         public void Reset()
         {
-            Tamago.Health = 10;
+            Tamago.Health = 11;
             Tamago.Joy = 2;
             Tamago.Hungry = 5;
             Tamago.Tired = 1;
@@ -93,6 +93,7 @@ namespace Scripts
             if (Tamago.IsDead)
             {
                 MainText.text = "Your Tamagotchi died, try again..";
+                Reset();
             }
 
         }
@@ -112,7 +113,11 @@ namespace Scripts
             set
             {
                 _health = value;
-                if (_health > 0) return;
+                if (_health > 0)
+                {
+                    Debug.Log("if (_health > 0)");
+                    return;
+                }
                 _health = 0;
                 IsDead = true;
                 Debug.Log("Your Tamagochi is dead");
@@ -131,7 +136,10 @@ namespace Scripts
                 _tired = value;
                 if (_tired >= 5)
                 {
-                    Health--;
+                    if (Joy < 5)
+                    {
+                        Health--;
+                    }
                     Joy--;
                     Hungry++;
                     _tired = 5;
@@ -139,9 +147,14 @@ namespace Scripts
                 }
                 if(_tired <= 0)
                 {
-                    Health++;
-                    Hungry--;
+                    if (Joy > 1 && Hungry < 5)
+                    {
+                        Debug.Log("if (Joy > 1)");
+                        Health++;
+                    }
+                    Joy--;
                     _tired = 1;
+                    Debug.Log("if(_tired <= 0)");
                 }
             }
         }
@@ -165,10 +178,14 @@ namespace Scripts
 
                 if(_joy >= 5)
                 {
-                    Health++;
+                    if (Hungry < 5 && Tired < 5)
+                    {
+                        Health++;
+                    }
                     Tired++;
                     Hungry++;
                     _joy--;
+                    Debug.Log("if(_joy >= 5)");
                 }
             }
         }
@@ -185,17 +202,23 @@ namespace Scripts
                 _hungry = value;
                 if(_hungry <= 0)
                 {
-                    Health++;
+                    if (Joy > 0)
+                    {
+                        Health++;
+                    }
                     Tired--;
                     Joy++;
                     _hungry =1;
+                    Debug.Log("if(_hungry <= 0)");
                 }
 
                 if(_hungry >= 5)
                 {
-                    Health--;
+                    if (Joy < 5)
+                    {
+                        Health--;
+                    }
                     Tired++;
-                    Joy--;
                     _hungry = 5;
                     Debug.Log("Feed Me");
                 }
