@@ -22,28 +22,39 @@ namespace Scripts
 
         public void Feed()
         {
-            Tamago.Hungry--;
-            if (Tamago.Tired < 5 && Tamago.Joy > 0 )
+            if (!Tamago.IsDead)
             {
-                MainText.text = "Yum yum !";
+                Tamago.Hungry--;
+                Tamago.Tired++;
+                if (Tamago.Tired < 5 && Tamago.Joy > 0)
+                {
+                    MainText.text = "Yum yum !";
+                }
             }
         }
 
         public void Play()
         {
-            Tamago.Joy++;
-            if (Tamago.Tired < 5 && Tamago.Hungry < 5)
+            if (!Tamago.IsDead)
             {
-                MainText.text = "I like this game !";
+                Tamago.Joy++;
+                if (Tamago.Tired < 5 && Tamago.Hungry < 5)
+                {
+                    MainText.text = "I like this game !";
+                }
             }
         }
 
         public void Sleep()
         {
-            Tamago.Tired--;
-            if (Tamago.Hungry < 5 && Tamago.Joy > 0)
+            if (!Tamago.IsDead)
             {
-                MainText.text = "ZZzzzzz..";
+                Tamago.Tired--;
+                Tamago.Joy--;
+                if (Tamago.Hungry < 5 && Tamago.Joy > 1)
+                {
+                    MainText.text = "ZZzzzzz..";
+                }
             }
         }
 
@@ -63,12 +74,12 @@ namespace Scripts
             TIR.text = "Tired: " + Tamago.Tired.ToString();
             HUNG.text = "Hungry: " + Tamago.Hungry.ToString();
 
-            if(Tamago.Tired >= 5)
+            if(Tamago.Tired >= 5 && Tamago.Joy >2)
             {
                 MainText.text = "I need to sleep !";
             }
 
-            if(Tamago.Joy <= 0)
+            if(Tamago.Joy <= 1)
             {
                 MainText.text = "I want to play !";
             }
@@ -129,8 +140,7 @@ namespace Scripts
                 {
                     Health++;
                     Hungry--;
-                    Joy++;
-                    _tired++;
+                    _tired = 1;
                 }
             }
         }
@@ -148,7 +158,7 @@ namespace Scripts
                 if (_joy <= 0)
                 {
                     Health--;
-                    _joy = 0;
+                    _joy = 1;
                     Debug.Log("Play with me");
                 }
 
@@ -177,7 +187,7 @@ namespace Scripts
                     Health++;
                     Tired--;
                     Joy++;
-                    _hungry++;
+                    _hungry =1;
                 }
 
                 if(_hungry >= 5)
