@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 namespace Scripts
 {
     public class Tamagochi : MonoBehaviour
     {
-        public Tamago Tamago = new Tamago(10, 1, 2, 5);
+        public Tamago Tamago = new Tamago(10, 2, 3, 10);
         public TMP_Text MainText;
         public TMP_Text HP;
         public TMP_Text JOY;
@@ -27,7 +28,7 @@ namespace Scripts
                 Tamago.Hungry--;
                 Tamago.Tired++;
                 Tamago.Joy++;
-                if (Tamago.Tired < 5 && Tamago.Joy > 1)
+                if (Tamago.Tired < 10 && Tamago.Joy > 1)
                 {
                     MainText.text = "Yum yum !";
                 }
@@ -40,7 +41,7 @@ namespace Scripts
             {
                 Tamago.Joy++;
                 Tamago.Hungry++;
-                if (Tamago.Tired < 5 && Tamago.Hungry < 5)
+                if (Tamago.Tired < 10 && Tamago.Hungry < 10)
                 {
                     MainText.text = "I like this game !";
                 }
@@ -52,7 +53,7 @@ namespace Scripts
             if (!Tamago.IsDead)
             {
                 Tamago.Tired--;
-                if (Tamago.Hungry < 5 && Tamago.Joy > 1)
+                if (Tamago.Hungry < 10 && Tamago.Joy > 1)
                 {
                     MainText.text = "ZZzzzzz..";
                 }
@@ -61,10 +62,7 @@ namespace Scripts
 
         public void Reset()
         {
-            Tamago.Health = 11;
-            Tamago.Joy = 2;
-            Tamago.Hungry = 5;
-            Tamago.Tired = 1;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
         // Update is called once per frame
@@ -75,7 +73,7 @@ namespace Scripts
             TIR.text = "Tired: " + Tamago.Tired.ToString();
             HUNG.text = "Hungry: " + Tamago.Hungry.ToString();
 
-            if(Tamago.Tired >= 5 && Tamago.Joy >2)
+            if(Tamago.Tired >= 10 && Tamago.Joy >2)
             {
                 MainText.text = "I need to sleep !";
             }
@@ -85,7 +83,7 @@ namespace Scripts
                 MainText.text = "I want to play !";
             }
 
-            if(Tamago.Hungry >= 5)
+            if(Tamago.Hungry >= 10)
             {
                 MainText.text = "I want to eat !";
             }
@@ -134,20 +132,23 @@ namespace Scripts
             set
             {
                 _tired = value;
-                if (_tired >= 5)
+                if (_tired >= 10)
                 {
-                    if (Joy < 5)
+                    if (Joy < 10)
                     {
                         Health--;
                     }
                     Joy--;
-                    Hungry++;
-                    _tired = 5;
+                    if (Hungry < 10)
+                    {
+                        Hungry++;
+                    }
+                    _tired = 10;
                     Debug.Log("Need to sleep");
                 }
                 if(_tired <= 0)
                 {
-                    if (Joy > 1 && Hungry < 5)
+                    if (Joy > 1 && Hungry < 10)
                     {
                         Debug.Log("if (Joy > 1)");
                         Health++;
@@ -176,14 +177,15 @@ namespace Scripts
                     Debug.Log("Play with me");
                 }
 
-                if(_joy >= 5)
+                if(_joy >= 10)
                 {
-                    if (Hungry < 5 && Tired < 5)
+                    if (Hungry < 10 && Tired < 10)
                     {
                         Health++;
+                        Tired++;
+                        Hungry++;
                     }
-                    Tired++;
-                    Hungry++;
+                    
                     _joy--;
                     Debug.Log("if(_joy >= 5)");
                 }
@@ -212,14 +214,15 @@ namespace Scripts
                     Debug.Log("if(_hungry <= 0)");
                 }
 
-                if(_hungry >= 5)
+                if(_hungry >= 10)
                 {
-                    if (Joy < 5)
+                    if (Joy < 10)
                     {
                         Health--;
                     }
+                    Joy--;
                     Tired++;
-                    _hungry = 5;
+                    _hungry = 10;
                     Debug.Log("Feed Me");
                 }
             }
