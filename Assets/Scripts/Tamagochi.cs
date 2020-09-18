@@ -26,7 +26,8 @@ namespace Scripts
             {
                 Tamago.Hungry--;
                 Tamago.Tired++;
-                if (Tamago.Tired < 5 && Tamago.Joy > 0)
+                Tamago.Joy++;
+                if (Tamago.Tired < 5 && Tamago.Joy > 1)
                 {
                     MainText.text = "Yum yum !";
                 }
@@ -38,6 +39,7 @@ namespace Scripts
             if (!Tamago.IsDead)
             {
                 Tamago.Joy++;
+                Tamago.Hungry++;
                 if (Tamago.Tired < 5 && Tamago.Hungry < 5)
                 {
                     MainText.text = "I like this game !";
@@ -50,7 +52,6 @@ namespace Scripts
             if (!Tamago.IsDead)
             {
                 Tamago.Tired--;
-                Tamago.Joy--;
                 if (Tamago.Hungry < 5 && Tamago.Joy > 1)
                 {
                     MainText.text = "ZZzzzzz..";
