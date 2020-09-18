@@ -1,37 +1,87 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using TMPro;
 
 namespace Scripts
 {
     public class Tamagochi : MonoBehaviour
     {
         public Tamago Tamago = new Tamago(10, 1, 2, 5);
+        public TMP_Text MainText;
+        public TMP_Text HP;
+        public TMP_Text JOY;
+        public TMP_Text TIR;
+        public TMP_Text HUNG;
 
         // Start is called before the first frame update
         void Start()
         {
-            
         }
 
-        void Feed()
+        public void Feed()
         {
             Tamago.Hungry--;
+            if (Tamago.Tired < 5 && Tamago.Joy > 0 )
+            {
+                MainText.text = "Yum yum !";
+            }
         }
 
-        void Play()
+        public void Play()
         {
             Tamago.Joy++;
+            if (Tamago.Tired < 5 && Tamago.Hungry < 5)
+            {
+                MainText.text = "I like this game !";
+            }
         }
 
-        void Sleep()
+        public void Sleep()
         {
             Tamago.Tired--;
+            if (Tamago.Hungry < 5 && Tamago.Joy > 0)
+            {
+                MainText.text = "ZZzzzzz..";
+            }
+        }
+
+        public void Reset()
+        {
+            Tamago.Health = 10;
+            Tamago.Joy = 2;
+            Tamago.Hungry = 5;
+            Tamago.Tired = 1;
         }
 
         // Update is called once per frame
         void Update()
         {
+            HP.text = "HP: " + Tamago.Health.ToString();
+            JOY.text = "Joy: " + Tamago.Joy.ToString();
+            TIR.text = "Tired: " + Tamago.Tired.ToString();
+            HUNG.text = "Hungry: " + Tamago.Hungry.ToString();
+
+            if(Tamago.Tired >= 5)
+            {
+                MainText.text = "I need to sleep !";
+            }
+
+            if(Tamago.Joy <= 0)
+            {
+                MainText.text = "I want to play !";
+            }
+
+            if(Tamago.Hungry >= 5)
+            {
+                MainText.text = "I want to eat !";
+            }
+
+            if (Tamago.IsDead)
+            {
+                MainText.text = "Your Tamagotchi died, try again..";
+            }
 
         }
     }
@@ -72,7 +122,7 @@ namespace Scripts
                     Health--;
                     Joy--;
                     Hungry++;
-                    _tired--;
+                    _tired = 5;
                     Debug.Log("Need to sleep");
                 }
                 if(_tired <= 0)
@@ -98,7 +148,7 @@ namespace Scripts
                 if (_joy <= 0)
                 {
                     Health--;
-                    _joy++;
+                    _joy = 0;
                     Debug.Log("Play with me");
                 }
 
@@ -135,7 +185,7 @@ namespace Scripts
                     Health--;
                     Tired++;
                     Joy--;
-                    _hungry--;
+                    _hungry = 5;
                     Debug.Log("Feed Me");
                 }
             }
