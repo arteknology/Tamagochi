@@ -9,6 +9,10 @@ namespace Scripts
 {
     public class Tamagochi : MonoBehaviour
     {
+        public static Action OnSleep;
+        public static Action OnPlayed;
+        public static Action OnAte;
+
         public Tamago Tamago = new Tamago(10, 2, 3, 10);
         public TMP_Text MainText;
         public TMP_Text HP;
@@ -16,15 +20,24 @@ namespace Scripts
         public TMP_Text TIR;
         public TMP_Text HUNG;
 
+        [NonSerialized] public bool Eating;
+        [NonSerialized] public bool Sleeping;
+        [NonSerialized] public bool Playing;
+
+
         // Start is called before the first frame update
         void Start()
         {
+            Eating = false;
+            Sleeping = false;
+            Playing = false;
         }
 
         public void Feed()
         {
             if (!Tamago.IsDead)
             {
+                Eating = true;
                 Tamago.Hungry--;
                 Tamago.Tired++;
                 Tamago.Joy++;
@@ -32,6 +45,7 @@ namespace Scripts
                 {
                     MainText.text = "Yum yum !";
                 }
+                OnAte.Invoke();
             }
         }
 
@@ -43,8 +57,10 @@ namespace Scripts
                 Tamago.Hungry++;
                 if (Tamago.Tired < 10 && Tamago.Hungry < 10)
                 {
+                    Playing = true;
                     MainText.text = "I like this game !";
                 }
+                OnPlayed.Invoke();
             }
         }
 
@@ -55,8 +71,10 @@ namespace Scripts
                 Tamago.Tired--;
                 if (Tamago.Hungry < 10 && Tamago.Joy > 1)
                 {
+                    Sleeping = true;
                     MainText.text = "ZZzzzzz..";
                 }
+                OnSleep.Invoke();
             }
         }
 
